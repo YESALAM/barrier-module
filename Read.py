@@ -5,7 +5,86 @@ import RPi.GPIO as GPIO
 import MFRC522
 import signal
 
+import requests
+import json
+
 import time
+import sys
+
+#change this id based on what is going to be
+b_id  = 5
+
+try:
+    arguments = sys.argv[1:]
+    count = len(arguments)
+    if count==1:
+        b_id = arguments[1]
+except:
+    print "argument error"
+
+def verify(uid):
+    base_url = ""
+    final_url = base_url + "/fetch"
+
+    payload  = {'b_id':b_id,'uuid':uid}
+
+    response = requests.post(final_url, data=payload)
+
+    json_response = response.text
+
+    js = json.loads(json_response)
+    result = js['result']
+    return result
+
+
+
+def redLight():
+    GPIO.cleanup()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(23, GPIO.OUT)
+    print "LED on"
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(5)
+    print "LED off"
+    GPIO.output(23, GPIO.LOW)
+
+def greeLight():
+    GPIO.cleanup()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(18, GPIO.OUT)
+    print "LED on"
+    GPIO.output(18, GPIO.HIGH)
+    time.sleep(5)
+    print "LED off"
+    GPIO.output(18, GPIO.LOW)
+
+def redLightFlash():
+    GPIO.cleanup()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(23, GPIO.OUT)
+    print "LED on"
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(23, GPIO.LOW)
+    time.sleep(1)
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(23, GPIO.LOW)
+    time.sleep(1)
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(23, GPIO.LOW)
+    time.sleep(1)
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(23, GPIO.LOW)
+    time.sleep(1)
+    GPIO.output(23, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(23, GPIO.LOW)
 
 continue_reading = True
 
@@ -44,7 +123,7 @@ while continue_reading:
 
         # Print UID
         print "Card read UID: "+str(uid[0])+","+str(uid[1])+","+str(uid[2])+","+str(uid[3])
-    
+
         # This is the default key for authentication
         key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]
         
@@ -58,6 +137,14 @@ while continue_reading:
         if status == MIFAREReader.MI_OK:
             MIFAREReader.MFRC522_Read(8)
             MIFAREReader.MFRC522_StopCrypto1()
+            result = verify(uid)
+            if result == 'ok':
+                print 'Ok to go'
+                greeLight()
+            else:
+                print 'Can not go'
+                redLight()
         else:
             print "Authentication error"
+            redLightFlash()
 
