@@ -36,6 +36,12 @@ def verify(uid):
     result = js['result']
     return result
 
+def continous_redLight():
+    GPIO.cleanup()
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(23, GPIO.OUT)
+    print "Red LED on"
 
 
 def redLight():
@@ -105,6 +111,8 @@ MIFAREReader = MFRC522.MFRC522()
 print "Welcome to the MFRC522 data read example"
 print "Press Ctrl-C to stop."
 
+continous_redLight()
+
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
 while continue_reading:
     
@@ -144,7 +152,7 @@ while continue_reading:
             greeLight()
         else:
             print 'Can not go'
-            redLight()
+            redLightFlash()
         #else:
         #    print "Authentication error"
         #    redLightFlash()
