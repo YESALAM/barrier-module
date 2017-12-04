@@ -137,7 +137,8 @@ while continue_reading:
         if status == MIFAREReader.MI_OK:
             MIFAREReader.MFRC522_Read(8)
             MIFAREReader.MFRC522_StopCrypto1()
-            result = verify(uid)
+            suid = str(uid[0]) + str(uid[1]) + str(uid[2]) + str(uid[3])
+            result = verify(suid)
             if result == 'ok':
                 print 'Ok to go'
                 greeLight()
