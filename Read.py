@@ -131,21 +131,21 @@ while continue_reading:
         MIFAREReader.MFRC522_SelectTag(uid)
 
         # Authenticate
-        status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
+        #status = MIFAREReader.MFRC522_Auth(MIFAREReader.PICC_AUTHENT1A, 8, key, uid)
 
         # Check if authenticated
-        if status == MIFAREReader.MI_OK:
-            MIFAREReader.MFRC522_Read(8)
-            MIFAREReader.MFRC522_StopCrypto1()
-            suid = str(uid[0]) + str(uid[1]) + str(uid[2]) + str(uid[3])
-            result = verify(suid)
-            if result == 'ok':
-                print 'Ok to go'
-                greeLight()
-            else:
-                print 'Can not go'
-                redLight()
+        #if status == MIFAREReader.MI_OK:
+        #    MIFAREReader.MFRC522_Read(8)
+        #    MIFAREReader.MFRC522_StopCrypto1()
+        suid = str(uid[0]) + str(uid[1]) + str(uid[2]) + str(uid[3])
+        result = verify(suid)
+        if result == 'ok':
+            print 'Ok to go'
+            greeLight()
         else:
-            print "Authentication error"
-            redLightFlash()
+            print 'Can not go'
+            redLight()
+        #else:
+        #    print "Authentication error"
+        #    redLightFlash()
 
