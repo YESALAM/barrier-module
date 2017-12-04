@@ -15,9 +15,9 @@ import sys
 b_id  = 1
 
 try:
-    arguments = sys.argv[1:]
+    arguments = sys.argv
     count = len(arguments)
-    if count==1:
+    if count==2:
         b_id = arguments[1]
 except:
     print "argument error"
