@@ -27,7 +27,7 @@ def verify(uid):
     final_url = base_url + "/fetch"
 
     payload  = {'b_id':b_id,'uuid':uid}
-    print "sending to server"
+    print "sending to server",final_url
     response = requests.post(final_url, data=payload)
 
     json_response = response.text
