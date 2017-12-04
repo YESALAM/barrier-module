@@ -23,7 +23,7 @@ except:
     print "argument error"
 
 def verify(uid):
-    base_url = "http://ec2-52-90-129-59.compute-1.amazonaws.com"
+    base_url = "http://ec2-52-90-129-59.compute-1.amazonaws.com:5000"
     final_url = base_url + "/fetch"
 
     payload  = {'b_id':b_id,'uuid':uid}
